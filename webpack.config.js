@@ -62,24 +62,24 @@ const clientConfig = {
     entry: {
         '../public/page-core': './helpers/PageCore.js'
     },
-    optimization: {
-        minimize: false,
-        runtimeChunk: {
-            name: '../public/page-base'
-        },
-        splitChunks: {
-            cacheGroups: {
-                default: false,
-                ['../public/page-base']: {
-                    test: /\.js?$/,
-                    chunks: 'all',
-                    minChunks: 2,
-                    name: '../public/page-base',
-                    enforce: true
-                }
-            }
-        }
-    }
+    // optimization: {
+    //     minimize: false,
+    //     runtimeChunk: {
+    //         name: '../public/page-base'
+    //     },
+    //     splitChunks: {
+    //         cacheGroups: {
+    //             default: false,
+    //             ['../public/page-base']: {
+    //                 test: /\.js?$/,
+    //                 chunks: 'all',
+    //                 minChunks: 2,
+    //                 name: '../public/page-base',
+    //                 enforce: true
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 module.exports = [serverConfig, clientConfig]

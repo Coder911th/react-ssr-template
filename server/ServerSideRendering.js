@@ -23,7 +23,6 @@ const secordChunk = (
 )
 const thirdChunk = (
         '</div>' +
-            '<script src="/public/page-base.js" defer></script>' +
             '<script src="/public/page-core.js" defer></script>' +
         '</body>' +
     '</html>'
