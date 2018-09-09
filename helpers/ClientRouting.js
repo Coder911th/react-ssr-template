@@ -1,17 +1,22 @@
-// import React from 'react'
-// import ReactDOM from 'react-dom'
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-// const pagesCache = {}
+const pagesCache = {}
 
-// export async function clientSideRendering(pageName) {
-//     const Page = (await import(/* webpackChunkName: "client/[request]" */
-//         `../pages/${pageName}`)).default
-//     ReactDOM.hydrate(<Page/>, document.getElementById('content'))
-// }
+// Запустить клиенский рендеринг страницы
+export async function clientSideRendering(pageName) {
+    const Page = (await import(/* webpackChunkName: "client/[request]" */
+        `../pages/${pageName}`)).default
+    ReactDOM.hydrate(<Page/>, document.getElementById('content'))
+}
 
-// export async function goTo(pageName) {
-//     const content = await fetch(`server/${pageName}`).then(res => res.text())
-//     pagesCache[pageName] = content
-//     document.getElementById('content').innerHTML = content
-//     clientSideRendering(pageName)
-// }
+// Переход на конкретную страницу
+export async function goTo(pageName) {
+    history.pushState(null, null, pageName)
+    const content = await fetch(`server/${pageName}`).then(res => res.text())
+    pagesCache[pageName] = content
+    const contentContainer = document.getElementById('content')
+    ReactDOM.unmountComponentAtNode(contentContainer)
+    contentContainer.innerHTML = content
+    clientSideRendering(pageName)
+}
