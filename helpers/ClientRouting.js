@@ -15,11 +15,13 @@ export async function clientSideRendering(pageName) {
 }
 
 // Переход на конкретную страницу
-export async function goTo(pageName) {
+export async function goTo(pageName, pushState=true) {
     let Page = null
     const contentContainer = document.getElementById('content')
 
-    history.pushState(null, null, pageName)
+    if (pushState) {
+        history.pushState(null, null, pageName)
+    }
 
     await Promise.all([
         new Promise(resolve =>
