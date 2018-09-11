@@ -32,7 +32,9 @@ export async function sendPageTemplate(res, pageName) {
     const Page = await getPage(pageName);
     res.set('Content-Type', 'text/html')
     res.write(firstChunk)
-    res.write(Page.title)
+    if (Page.title) {
+        res.write(Page.title)
+    }
     res.write(secordChunk)
     const stream = renderToNodeStream(<Page/>)
     stream.pipe(res, {end: false})

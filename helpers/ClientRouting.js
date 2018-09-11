@@ -36,5 +36,9 @@ export async function goTo(pageName, pushState=true) {
             }),
         getPage(pageName).then(pageClass => Page = pageClass)
     ])
+
+    // Установка мета данных страницы
+    document.title = Page.title
+
     ReactDOM.hydrate(<Page/>, contentContainer)
 }
