@@ -3,7 +3,31 @@ const
     path = require('path'),
     webpack = require('webpack'),
     nodeExternals = require('webpack-node-externals'),
-    DEVELOPMENT_MODE = process.env.NODE_ENV !== 'production'
+    BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin,
+    MiniCssExtractPlugin = require("mini-css-extract-plugin")
+
+const
+    DEVELOPMENT_MODE = process.env.NODE_ENV !== 'production',
+    ANALYZE_CLIENT_BUNDLE = false
+
+const commonPuginsConfig = [
+    new webpack.DefinePlugin({
+        // Загружаем список страниц сайта
+        PAGES: JSON.stringify(
+            fs.readdirSync('./pages').map(name =>
+                name.replace('.js', '')))
+    })
+]
+
+const commonRulesConfig = [
+    {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+            loader: "babel-loader"
+        }
+    }
+]
 
 // Общие конфигурации
 const commonRootConfig = {
@@ -19,25 +43,16 @@ const commonRootConfig = {
     devtool: DEVELOPMENT_MODE
         ? 'inline-source-map'
         : null,
-    module: {
-        rules: [
-            {
-                test: /\.js$/,
-                exclude: /node_modules/,
-                use: {
-                    loader: "babel-loader"
-                }
-            }
-        ]
+    resolve: {
+        alias: {
+            Components: path.resolve(__dirname, 'components'),
+            Helpers: path.resolve(__dirname, 'helpers')
+        }
     },
-    plugins: [
-        new webpack.DefinePlugin({
-            // Загружаем список страниц сайта
-            PAGES: JSON.stringify(
-                fs.readdirSync('./pages').map(name =>
-                    name.replace('.js', '')))
-        })
-    ]
+    module: {
+        rules: commonRulesConfig
+    },
+    plugins: commonPuginsConfig
 }
 
 // Серверные конфигурации
@@ -53,6 +68,28 @@ const serverConfig = {
         server: './server/ServerCore'
     },
     externals: [nodeExternals()],
+    module: {
+        rules: [
+            ...commonRulesConfig,
+            {
+                test: /\.css$/,
+                exclude: /node_modules/,
+                use: [
+                    {loader: "null-loader"}
+                ]
+            }
+        ]
+    }
+}
+
+const clientPluginsConfig = [
+    ...commonPuginsConfig,
+    new MiniCssExtractPlugin({
+        filename: "[name].css"
+    })
+]
+if (ANALYZE_CLIENT_BUNDLE) {
+    clientPluginsConfig.push(new BundleAnalyzerPlugin())
 }
 
 // Клиентские конфигурации
@@ -62,24 +99,38 @@ const clientConfig = {
     entry: {
         '../public/page-core': './helpers/PageCore.js'
     },
-    // optimization: {
-    //     minimize: false,
-    //     runtimeChunk: {
-    //         name: '../public/page-base'
-    //     },
-    //     splitChunks: {
-    //         cacheGroups: {
-    //             default: false,
-    //             ['../public/page-base']: {
-    //                 test: /\.js?$/,
-    //                 chunks: 'all',
-    //                 minChunks: 2,
-    //                 name: '../public/page-base',
-    //                 enforce: true
-    //             }
-    //         }
-    //     }
-    // }
+    module: {
+        rules: [
+            ...commonRulesConfig,
+            {
+                test: /\.css$/,
+                exclude: /node_modules/,
+                use: [
+                    {loader: MiniCssExtractPlugin.loader},
+                    {loader: "css-loader"}
+                ]
+            }
+        ]
+    },
+    optimization: {
+        minimize: false,
+        runtimeChunk: {
+            name: '../public/page-core'
+        }/*,
+        splitChunks: {
+            cacheGroups: {
+                default: false,
+                ['../public/page-core']: {
+                    test: /\.js?$/,
+                    chunks: 'all',
+                    minChunks: 2,
+                    name: '../public/page-core',
+                    enforce: true
+                }
+            }
+        }*/
+    },
+    plugins: clientPluginsConfig
 }
 
 module.exports = [serverConfig, clientConfig]

@@ -1,5 +1,5 @@
 node_modules
 .vscode
 build
-public/page-base.js
 public/page-core.js
+todo.md

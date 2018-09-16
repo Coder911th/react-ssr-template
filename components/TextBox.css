@@ -1,0 +1,8 @@
+.text-box {
+    display: inline-block;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    background: #fff;
+    outline: none;
+    border: 1px solid red;
+}

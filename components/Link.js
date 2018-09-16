@@ -1,5 +1,6 @@
 import React from 'react';
-import {goTo} from '../helpers/ClientRouting'
+import './Link.css'
+import {goTo} from 'Helpers/ClientRouting'
 
 class Link extends React.Component {
     constructor(props) {
@@ -13,7 +14,7 @@ class Link extends React.Component {
     
     render() {
         return (
-            <a onClick={this.clickHandler}>{this.props.children}</a>
+            <a className="link" onClick={this.clickHandler}>{this.props.children}</a>
         );
     }
 }

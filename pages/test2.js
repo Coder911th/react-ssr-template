@@ -1,5 +1,5 @@
 import React from 'react'
-import Link from '../components/Link'
+import Link from 'Components/Link'
 
 class Test extends React.Component {
     static title = 'Вторая тестовая страница'

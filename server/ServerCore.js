@@ -18,10 +18,8 @@ router
         sendPageTemplate(res, req.path.slice(1)))
     /* Клиентский рендеринг */
     .get('/client/:pageName', (req, res) =>
-        res
-            .set('Content-Type', 'application/javascript')
-            .sendFile(req.params.pageName, {
-                root: path.resolve(APP_FOLDER, 'client')}))
+        res.sendFile(req.params.pageName, {
+            root: path.resolve(APP_FOLDER, 'client')}))
     /* Серверный рендеринг */
     .get('/server/:pageName', (req, res) =>
         serverSideRendering(res, req.params.pageName))

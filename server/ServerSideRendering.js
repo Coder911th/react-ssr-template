@@ -23,6 +23,7 @@ const secordChunk = (
 )
 const thirdChunk = (
         '</div>' +
+            // '<script src="/public/page-base.js" defer></script>' +
             '<script src="/public/page-core.js" defer></script>' +
         '</body>' +
     '</html>'
@@ -38,8 +39,7 @@ export async function sendPageTemplate(res, pageName) {
     res.write(secordChunk)
     const stream = renderToNodeStream(<Page/>)
     stream.pipe(res, {end: false})
-    stream.on('end', () =>
-        res.end(thirdChunk))
+    stream.on('end', () => res.end(thirdChunk))
 }
 
 export async function serverSideRendering(res, pageName) {
