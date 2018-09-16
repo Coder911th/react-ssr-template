@@ -9,7 +9,7 @@ const
 const
     DEVELOPMENT_MODE = process.env.NODE_ENV !== 'production',
     ANALYZE_CLIENT_BUNDLE = false
-
+console.log(DEVELOPMENT_MODE, process.env.NODE_ENV)
 const commonPuginsConfig = [
     new webpack.DefinePlugin({
         // Загружаем список страниц сайта
@@ -42,7 +42,7 @@ const commonRootConfig = {
     watch: DEVELOPMENT_MODE,
     devtool: DEVELOPMENT_MODE
         ? 'inline-source-map'
-        : null,
+        : false,
     resolve: {
         alias: {
             Components: path.resolve(__dirname, 'components'),
@@ -113,7 +113,7 @@ const clientConfig = {
         ]
     },
     optimization: {
-        minimize: false,
+        minimize: true,
         runtimeChunk: {
             name: '../public/page-core'
         }/*,
