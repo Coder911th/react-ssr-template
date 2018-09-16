@@ -23,7 +23,9 @@ export async function goTo(pageName, pushState=true) {
         history.pushState(null, null, pageName)
     }
 
+    // TODO: Проверить
     await Promise.all([
+        // Предзагрузка страницы
         new Promise(resolve =>
             resolve(
                 pagesCache[pageName]
@@ -34,6 +36,7 @@ export async function goTo(pageName, pushState=true) {
                 ReactDOM.unmountComponentAtNode(contentContainer)
                 contentContainer.innerHTML = content
             }),
+        // Загрузка страницы
         getPage(pageName).then(pageClass => Page = pageClass)
     ])
 

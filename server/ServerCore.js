@@ -1,6 +1,9 @@
 import express from 'express'
 import path from 'path'
-import {serverSideRendering, sendPageTemplate} from './ServerSideRendering'
+import {
+    serverSideRendering,
+    sendPageTemplate
+} from './ServerSideRendering'
 
 const
     PORT = 8080,
@@ -19,6 +22,7 @@ router
         sendPageTemplate(res, req.path.slice(1)))
     /* Клиентский рендеринг */
     // TODO: Обработка 404. Блокировка доступа к fs.
+    // TODO: отдельные роуты для страниц и для стилей
     .get('/client/:pageName', (req, res) =>
         res.sendFile(req.params.pageName, {
             root: path.resolve(APP_FOLDER, 'client')}))
