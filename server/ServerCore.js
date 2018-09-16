@@ -1,4 +1,5 @@
 import express from 'express'
+import helmet from 'helmet'
 import path from 'path'
 import {
     serverSideRendering,
@@ -13,6 +14,7 @@ const
     router = express()
 
 router
+    .use(helmet())
     /* Выгрузка статики */
     // TODO: Проверить возможность выхода из "песочницы"
     .get('/public/:fileName', (req, res) =>

@@ -33,6 +33,7 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.0.0-rc.2",
+        "helmet": "^3.13.0",
         "pg": "^7.4.3",
         "react": "^16.4.2",
         "react-dom": "^16.4.2"
