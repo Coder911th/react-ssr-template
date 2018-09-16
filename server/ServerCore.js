@@ -11,16 +11,19 @@ const
 
 router
     /* Выгрузка статики */
+    // TODO: Проверить возможность выхода из "песочницы"
     .get('/public/:fileName', (req, res) =>
         res.sendFile(req.params.fileName, {root: PUBLIC_FOLDER}))
     /* Первая загрузка приложения */
     .get(pagesRoutes, (req, res) =>
         sendPageTemplate(res, req.path.slice(1)))
     /* Клиентский рендеринг */
+    // TODO: Обработка 404. Блокировка доступа к fs.
     .get('/client/:pageName', (req, res) =>
         res.sendFile(req.params.pageName, {
             root: path.resolve(APP_FOLDER, 'client')}))
     /* Серверный рендеринг */
+    // TODO: Обработка 404. Блокировка доступа к fs.
     .get('/server/:pageName', (req, res) =>
         serverSideRendering(res, req.params.pageName))
     /* Not Found 404 */
